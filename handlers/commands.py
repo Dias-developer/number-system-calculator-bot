@@ -1,0 +1,8 @@
+from aiogram import Router
+from aiogram.filters import Command, CommandStart
+from aiogram.types import Message
+router = Router()
+
+@router.message(CommandStart())
+async def command_start(message: Message):
+    await message.answer("Привет, я калькулятор для систем счисления!")
