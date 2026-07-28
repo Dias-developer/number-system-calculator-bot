@@ -4,7 +4,7 @@ from os import getenv
 import logging
 import asyncio
 
-from handlers.commands import router
+from Number_systems_calculator_bot.handlers.commands import router
 
 load_dotenv()
 token = getenv("TOKEN")
@@ -13,7 +13,7 @@ dp = Dispatcher()
 
 async def main():
     dp.include_router(router)
-    await dp.start_polling(bot=bot)
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
