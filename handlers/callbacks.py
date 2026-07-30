@@ -12,8 +12,8 @@ from Number_systems_calculator_bot.states.calculator import Calculator
 inline_router = Router()
 
 @inline_router.callback_query(F.data == "convert")
-async def show_convert_menu(callback: CallbackQuery, state: FSMContext):
-    await callback.message.answer(
+async def show_convert_menu(callback: CallbackQuery):
+    await callback.message.edit_text(
         "Выберите направление перевода:",
         reply_markup=decimal_inline(),
     )
@@ -56,12 +56,19 @@ async def process_to_decimal(message: Message, state: FSMContext):
 
         await state.clear()
 
-    except ValueError:
-        await message.answer(
-            "Ошибка! Введите данные в формате:\n"
-            "1010 2"
-        )
+    except ValueError as e:
+        if "Base must be between 2 and 36" in str(e):
 
+            await message.answer(
+                "Ошибка! Система счисления должна быть от 2 до 36."
+            )
+        else:
+
+            await message.answer(
+                "Ошибка! Проверьте число.\n"
+                "Пример:\n"
+                "1010 2"
+            )
 
 @inline_router.message(Calculator.waiting_for_from_decimal_conversion)
 async def process_from_decimal(message: Message, state: FSMContext):
@@ -79,11 +86,28 @@ async def process_from_decimal(message: Message, state: FSMContext):
 
         await state.clear()
 
-    except ValueError:
-        await message.answer(
-            "Ошибка! Введите данные в формате:\n"
-            "1010 2"
-        )
+
+    except ValueError as e:
+
+        if "Base must be between 2 and 36" in str(e):
+
+            await message.answer(
+
+                "Ошибка! Система счисления должна быть от 2 до 36."
+
+            )
+
+        else:
+
+            await message.answer(
+
+                "Ошибка! Проверьте число.\n"
+
+                "Пример:\n"
+
+                "1010 2"
+
+            )
 
 
 @inline_router.callback_query(F.data == "add")
